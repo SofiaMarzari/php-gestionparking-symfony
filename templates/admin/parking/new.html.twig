@@ -3,16 +3,35 @@
 {% block title %}New Parking{% endblock %}
 
 {% block body %}
-    <h1>New Parking</h1>
+    {% if is_granted('ROLE_ADMIN') %}
+        <h1 class="title-template">{{ action }} Parking</h1>
 
-    {{ form_errors(form) }}
+        {{ form_errors(form) }}
 
-    {{ form_start(form, {'attr': {'class': 'form-group'}}) }}
-        {{ form_row(form.nombre) }}
-        {{ form_row(form.direccion) }}
-        {{ form_row(form.latitud) }}
-        {{ form_row(form.longitud) }}
+        {{ form_start(form, {'attr': {'class': 'form-group'}}) }}
+            {{ form_row(form.nombre, {'attr': {
+                'class': 'form-control',
+                }}) 
+            }}
+            {{ form_row(form.direccion, {'attr': {
+                'class': 'form-control',
+                }}) 
+            }}
+            {{ form_row(form.latitud, {'attr': {
+                'class': 'form-control',
+                }}) 
+            }}
+            {{ form_row(form.longitud, {'attr': {
+                'class': 'form-control',
+                }}) 
+            }}
 
-        <button type="submit" class="btn btn-success">Agregar</button>
-    {{ form_end(form) }}
+            {% if action == 'Editar' %}
+                <button type="submit" class="btn btn-warning">{{ action }}</button>
+            {% else %}
+                <button type="submit" class="btn btn-success">{{ action }}</button>
+            {% endif %}
+        {{ form_end(form) }}
+        <button type="button" style="float: right;" class="btn btn-volver"><a href="{{ path('admin_dashboard') }}">Volver al listado</a></button>
+    {% endif %}
 {% endblock %}

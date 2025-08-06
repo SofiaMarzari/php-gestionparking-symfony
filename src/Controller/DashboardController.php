@@ -7,6 +7,7 @@ use App\Entity\Parking;
 use App\Form\ParkingType;
 use App\Repository\ParkingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,6 +19,7 @@ class DashboardController extends AbstractController
     #[Route('/dashboard', name: 'admin_dashboard', methods: ['GET'])]
     public function index(ParkingRepository $repoParking): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $parkingAll = $repoParking->findAll();
 
         return $this->render('admin/parking/show.html.twig', [
@@ -29,6 +31,7 @@ class DashboardController extends AbstractController
     #[Route('/parking/new', name: 'admin_new', methods: ['GET', 'POST'])]
     public function create_parking(Request $request, ParkingService $service): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $parking = new Parking();
         $form = $this->createForm(ParkingType::class, $parking, [
             'csrf_protection' => true,
@@ -53,7 +56,9 @@ class DashboardController extends AbstractController
 
             $errors = array();
             return $this->render('admin/parking/show.html.twig', [
-                    'parking' => $parking
+                    'parking' => $parking,
+                    'action' => 'Crear',
+                    'titulo' => 'Parking'
             ]);
             
         }
@@ -61,13 +66,15 @@ class DashboardController extends AbstractController
         return $this->render('admin/parking/new.html.twig', [
                 'parking' => $parking,
                 'form' => $form->createView(),
-                'error' => $errors
+                'error' => $errors,
+                'action' => 'Crear'
         ]);
     }
 
     #[Route('/parking/{id}', name: 'admin_parking_id', methods: ['GET'])]
     public function get_parking(int $id, ParkingService $service): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $parking = $service->get_parking($id);
 
         return $this->render('admin/parking/show.html.twig', [
@@ -79,6 +86,7 @@ class DashboardController extends AbstractController
     #[Route('/parking/edit/{id}', name: 'admin_edit_parking', methods: ['GET', 'POST'])]
     public function edit_parking(int $id,Request $request, ParkingService $service): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $parking = $service->get_parking($id);
 
         $form = $this->createForm(ParkingType::class, $parking, [
@@ -94,7 +102,8 @@ class DashboardController extends AbstractController
 
             $errors = array();
             return $this->render('admin/parking/show.html.twig', [
-                    'parking' => $parking
+                    'parking' => $parking,
+                    'titulo' => 'Parking'
             ]);
             
         }
@@ -102,15 +111,18 @@ class DashboardController extends AbstractController
         return $this->render('admin/parking/new.html.twig', [
                 'parking' => $parking,
                 'form' => $form->createView(),
-                'error' => $errors
+                'error' => $errors,
+                'action' => 'Editar'
         ]);
     }
 
     #[Route('/parking/delete/{id}', name: 'admin_delete_parking', methods: ['POST'])]
     public function delete_parking(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('admin/index.html.twig', [
             'controller_name' => 'DashboardController',
+            'action' => 'Eliminar'
         ]);
     }
 }

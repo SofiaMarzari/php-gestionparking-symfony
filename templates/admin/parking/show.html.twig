@@ -3,10 +3,17 @@
 {% block title %}Show Parking{% endblock %}
 
 {% block body %}
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <h1 class="title-template">{{ titulo }}</h1>
+    {% if is_granted('ROLE_ADMIN') %}
+        <section class="header-listado">
+            <h1 class="title-template">{{ titulo }}</h1>
+            {% if parkings is defined %}
+                <button type="button" class="btn btn-success"><a href="{{ path('admin_new') }}">Crear</a></button>
+            {% elseif parking is defined %}
+                <button type="button" class="btn btn-warning" data-id="{{ parking.id }}"><a href="{{ path('admin_edit_parking', { id: parking.id }) }}">Editar</a></button>
+            {% endif %}
+        </section>
         {% if parkings is defined %}
-            <table class="table table-listado">
+            <table class="table table-listado" >
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
@@ -43,7 +50,8 @@
                 <li>{{ parking.latitud }}</li>
                 <li>{{ parking.longitud }}</li>
             </ul>
+            <button type="button" class="btn btn-volver"><a href="{{ path('admin_dashboard') }}">Volver al listado</a></button>
         {% endif %}
-        <button type="button" class="btn btn-volver"><a href="{{ path('admin_dashboard') }}">Volver</a></button>
+
     {% endif %}
 {% endblock %}

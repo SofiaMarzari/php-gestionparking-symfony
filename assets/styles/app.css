@@ -34,6 +34,17 @@ header{
 .section-container > h1{
     margin-top: 40px;
 }
+.header-listado{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+}
+.header-listado>button{
+    height: 37px;
+    width: 66px;
+    margin-right: 56px;
+}
 a{
     text-decoration: none !important;
     color: #fff !important;
@@ -58,3 +69,17 @@ a{
     margin-top: 0;
     margin-bottom: 4rem;
 }
+
+/*****************************FORMULARIOS****************************************/
+.form-group{
+    padding: 10px 20px 20px 0px;
+    width: 36%;
+}
+.form-group > div{
+    margin-bottom: 15px;
+}
+.form-group>button{
+    margin-top: 12px;
+    width: 26%;
+}
+/*****************************fin - FORMULARIOS****************************************/
