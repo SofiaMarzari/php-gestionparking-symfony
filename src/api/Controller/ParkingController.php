@@ -3,12 +3,13 @@
 namespace App\Api\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\ParkingService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-
+#[IsGranted('ROLE_API')]
 #[Route('/api/v1/parking')]
 class ParkingController extends AbstractController
 {
