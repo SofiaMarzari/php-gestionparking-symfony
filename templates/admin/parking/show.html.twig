@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Show Parking{% endblock %}
+
+{% block body %}
+    {% if parkings is defined %}
+        <h1>Show All Parkings</h1>
+        <table>
+            {% for p in parkings %}
+                <tr>
+               
+                    <td> {{ p.nombre }} </td>
+                    <td> {{ p.direccion }} </td>
+                    <td> {{ p.latitud }} </td>
+                    <td> {{ p.longitud }} </td>
+                
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h1>Show Parking</h1>
+        {{ parking.nombre }}
+        {{ parking.direccion }}
+        {{ parking.latitud }}
+        {{ parking.longitud }}
+    {% endif %}
+{% endblock %}

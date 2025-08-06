@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Parking{% endblock %}
+
+{% block body %}
+    <h1>New Parking</h1>
+
+    {{ form_errors(form) }}
+
+    {{ form_start(form, {'attr': {'class': 'form-group'}}) }}
+        {{ form_row(form.nombre) }}
+        {{ form_row(form.direccion) }}
+        {{ form_row(form.latitud) }}
+        {{ form_row(form.longitud) }}
+
+        <button type="submit" class="btn btn-success">Agregar</button>
+    {{ form_end(form) }}
+{% endblock %}
