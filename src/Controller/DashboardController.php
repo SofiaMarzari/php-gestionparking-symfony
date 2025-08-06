@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 #[IsGranted('ROLE_ADMIN')]
 #[Route('admin')]
@@ -42,15 +43,21 @@ class DashboardController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            /*$nombre = $request->request->get('nombre');
-            $direccion = $request->request->get('descripcion');
-            $latitud = $request->request->get('latitud');
-            $longitud = $request->request->get('longitud');
+            $data = $form->getData();
 
-            $parking->setNombre($nombre);
-            $parking->setDireccion($direccion);
-            $parking->setLatitud($latitud);
-            $parking->setLongitud($longitud);*/
+            $latitud = $data->getLatitud();
+            $longitud = $data->getLongitud();
+
+            $isValidCoord = $service->validar_coordenadas($longitud, $latitud);
+            if(!$isValidCoord){
+                $errors = 'Coordenadas invalidas.';
+                return $this->render('admin/parking/new.html.twig', [
+                        'parking' => $parking,
+                        'form' => $form->createView(),
+                        'error' => $errors,
+                        'action' => 'Crear'
+                ]);
+            }
 
             $service->save_parking($parking);
 
@@ -98,6 +105,15 @@ class DashboardController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+            $data = $form->getData();
+
+            $latitud = $data->getLatitud();
+            $longitud = $data->getLongitud();
+
+            $isValidCoord = $service->validar_coordenadas($longitud, $latitud);
+            if(!$isValidCoord){
+                throw new BadRequestHttpException('Coordenadas invalidas.');
+            }
             $service->save_parking($parking);
 
             $errors = array();

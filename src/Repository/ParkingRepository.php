@@ -21,28 +21,29 @@ class ParkingRepository extends ServiceEntityRepository
         parent::__construct($registry, Parking::class);
     }
 
-//    /**
-//     * @return Parking[] Returns an array of Parking objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findPointBy(float $latitud, float $longitud): ?array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = 'SELECT *, 
+                    (6371000 * 2 * ASIN(
+                        SQRT(
+                            POWER(SIN(RADIANS(latitud - :latitud) / 2), 2) +
+                            COS(RADIANS(:latitud)) * COS(RADIANS(latitud)) *
+                            POWER(SIN(RADIANS(longitud - :longitud) / 2), 2)
+                        )
+                    )) AS distancia
+                FROM parking
+                ORDER BY distancia ASC
+                LIMIT 1'
+        ;
 
-//    public function findOneBySomeField($value): ?Parking
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $stmt = $conn->prepare($sql);
+
+        $result = $stmt->executeQuery([
+            'latitud' => $latitud,
+            'longitud' => $longitud,
+        ]);
+
+        return $result->fetchAssociative() ?: null;
+    }
 }

@@ -14,9 +14,6 @@ class Estadistica
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $idparking = null;
-
     #[ORM\Column(length: 255)]
     private ?string $latitud = null;
 
@@ -29,18 +26,6 @@ class Estadistica
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdparking(): ?int
-    {
-        return $this->idparking;
-    }
-
-    public function setIdparking(int $idparking): static
-    {
-        $this->idparking = $idparking;
-
-        return $this;
     }
 
     public function getLatitud(): ?string
