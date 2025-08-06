@@ -10,3 +10,18 @@ import './styles/app.css';
 
 // start the Stimulus application
 import './bootstrap';
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.btnVerParking').forEach(element => {
+        element.addEventListener('click', () => {
+            let id = element.getAttribute('data-id');
+            fetch('/admin/parking/'+id)
+            .then(response => {
+                /*if (!response.ok) throw new Error('Error en la respuesta');
+                return response.text();*/
+            })
+            .catch(err => {
+                console.error('Error en fetch:', err);
+            });
+        });
+    });
+});

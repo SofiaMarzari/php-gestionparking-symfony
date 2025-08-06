@@ -73,12 +73,34 @@ class DashboardController extends AbstractController
             'parking' => $parking,
         ]);
     }
-/*
-    #[Route('/parking/edit/{id}', name: 'admin_edit_parking', methods: ['POST'])]
-    public function edit_parking(): Response
+
+    #[Route('/parking/edit/{id}', name: 'admin_edit_parking', methods: ['GET', 'POST'])]
+    public function edit_parking(int $id,Request $request, ParkingService $service): Response
     {
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'DashboardController',
+        $parking = $service->get_parking($id);
+
+        $form = $this->createForm(ParkingType::class, $parking, [
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token',
+            'csrf_token_id'   => 'parking_item',
+        ]);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $service->save_parking($parking);
+
+            $errors = array();
+            return $this->render('admin/parking/show.html.twig', [
+                    'parking' => $parking
+            ]);
+            
+        }
+        $errors = array();
+        return $this->render('admin/parking/new.html.twig', [
+                'parking' => $parking,
+                'form' => $form->createView(),
+                'error' => $errors
         ]);
     }
 
@@ -88,5 +110,5 @@ class DashboardController extends AbstractController
         return $this->render('admin/index.html.twig', [
             'controller_name' => 'DashboardController',
         ]);
-    }*/
+    }
 }

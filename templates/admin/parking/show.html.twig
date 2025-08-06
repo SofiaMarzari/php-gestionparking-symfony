@@ -3,25 +3,46 @@
 {% block title %}Show Parking{% endblock %}
 
 {% block body %}
-    {% if parkings is defined %}
-        <h1>Show All Parkings</h1>
-        <table>
-            {% for p in parkings %}
-                <tr>
-               
-                    <td> {{ p.nombre }} </td>
-                    <td> {{ p.direccion }} </td>
-                    <td> {{ p.latitud }} </td>
-                    <td> {{ p.longitud }} </td>
-                
-                </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <h1>Show Parking</h1>
-        {{ parking.nombre }}
-        {{ parking.direccion }}
-        {{ parking.latitud }}
-        {{ parking.longitud }}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {% if parkings is defined %}
+            <h1>Show All Parkings</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Direccion</th>
+                        <th scope="col">Latitud</th>
+                        <th scope="col">Longitud</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in parkings %}
+                        <tr>
+                            <td scope="row"> {{ p.id }} </td>
+                            <td> {{ p.nombre }} </td>
+                            <td> {{ p.direccion }} </td>
+                            <td> {{ p.latitud }} </td>
+                            <td> {{ p.longitud }} </td>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <td> 
+                                    <button type="button" class="btn btn-secondary btnVerParking" data-id="{{ p.id }}"><a href="{{ path('admin_parking_id', { id: p.id }) }}">Ver</a></button>
+                                    <button type="button" class="btn btn-warning" data-id="{{ p.id }}"><a href="{{ path('admin_edit_parking', { id: p.id }) }}">Editar</a></button>
+                                    <button type="button" class="btn btn-danger" data-id="{{ p.id }}"><a href="{{ path('admin_delete_parking', { id: p.id }) }}">Eliminar</a></button>  
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <h1>Show Parking</h1>
+            {{ parking.nombre }}
+            {{ parking.direccion }}
+            {{ parking.latitud }}
+            {{ parking.longitud }}
+        {% endif %}
     {% endif %}
+    <button type="button" class="btn btn-secondary"><a href="{{ path('admin_dashboard') }}">Volver</a></button>
 {% endblock %}
