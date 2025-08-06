@@ -4,9 +4,9 @@
 
 {% block body %}
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <h1 class="title-template">{{ titulo }}</h1>
         {% if parkings is defined %}
-            <h1>Show All Parkings</h1>
-            <table class="table">
+            <table class="table table-listado">
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
@@ -26,7 +26,7 @@
                             <td> {{ p.latitud }} </td>
                             <td> {{ p.longitud }} </td>
                             {% if is_granted('ROLE_ADMIN') %}
-                                <td> 
+                                <td class="table-listado-td-actions"> 
                                     <button type="button" class="btn btn-secondary btnVerParking" data-id="{{ p.id }}"><a href="{{ path('admin_parking_id', { id: p.id }) }}">Ver</a></button>
                                     <button type="button" class="btn btn-warning" data-id="{{ p.id }}"><a href="{{ path('admin_edit_parking', { id: p.id }) }}">Editar</a></button>
                                     <button type="button" class="btn btn-danger" data-id="{{ p.id }}"><a href="{{ path('admin_delete_parking', { id: p.id }) }}">Eliminar</a></button>  
@@ -37,12 +37,13 @@
                 </tbody>
             </table>
         {% else %}
-            <h1>Show Parking</h1>
-            {{ parking.nombre }}
-            {{ parking.direccion }}
-            {{ parking.latitud }}
-            {{ parking.longitud }}
+            <ul class="ul-detalle-entity">
+                <li>{{ parking.nombre }}</li>
+                <li>{{ parking.direccion }}</li>
+                <li>{{ parking.latitud }}</li>
+                <li>{{ parking.longitud }}</li>
+            </ul>
         {% endif %}
+        <button type="button" class="btn btn-volver"><a href="{{ path('admin_dashboard') }}">Volver</a></button>
     {% endif %}
-    <button type="button" class="btn btn-secondary"><a href="{{ path('admin_dashboard') }}">Volver</a></button>
 {% endblock %}

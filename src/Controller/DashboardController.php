@@ -22,6 +22,7 @@ class DashboardController extends AbstractController
 
         return $this->render('admin/parking/show.html.twig', [
             'parkings' => $parkingAll,
+            'titulo' => 'Listado de Parkings'
         ]);
     }
     
@@ -71,6 +72,7 @@ class DashboardController extends AbstractController
 
         return $this->render('admin/parking/show.html.twig', [
             'parking' => $parking,
+            'titulo' => 'Parking'
         ]);
     }
 

@@ -1,4 +1,7 @@
-controllers:
+controllers_api:
+    resource: ../src/Api/Controller/
+    type: attribute
+controllers_web:
     resource: ../src/Controller/
     type: attribute
 api_login_check:

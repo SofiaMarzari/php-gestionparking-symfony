@@ -2,16 +2,13 @@
 namespace App\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\ParkingRepository;
 use App\Entity\Parking;
 
 class ParkingService{
     private $entityManager;
-    private $parkingRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, ParkingRepository $parkingRepository){
+    public function __construct(EntityManagerInterface $entityManager){
         $this->entityManager = $entityManager;
-        $this->parkingRepository = $parkingRepository;
     }
 
     public function save_parking(Parking $parking) : void{
