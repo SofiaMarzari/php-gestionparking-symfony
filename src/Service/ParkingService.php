@@ -34,7 +34,13 @@ class ParkingService{
         $repoParking = $this->entityManager->getRepository(Parking::class);
         $data = $repoParking->findPointBy($latitud, $longitud);
 
-        ($data['distancia'] > 500) ?  $data['message'] = 'El parking mas cercano se encuentra a una distancia mayor a 500 metros.' :  $data['message'] = '';
+        if(!isset($data)){
+            $data['message'] = 'No existe ningun parking registrado.';
+        }else{
+           ($data['distancia'] > 500) ?  $data['message'] = 'El parking mas cercano se encuentra a una distancia mayor a 500 metros.' :  $data['message'] = '';
+        }
+
+        
 
         return $data;
     }
@@ -45,7 +51,7 @@ class ParkingService{
         $this->entityManager->flush();
     }
 
-    public function save_estadistica(string $latitud, string $longitud, DateTimeInterface $date){
+    public function save_estadistica(float $latitud, float $longitud, DateTimeInterface $date){
         $estadistica = new Estadistica();
 
         $estadistica->setLatitud($latitud);

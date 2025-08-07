@@ -103,7 +103,7 @@ class ParkingController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        if (!$data){
+        if ($data === null){
             // throw new BadRequestHttpException('JSON inválido');
             $data = $this->json([
                 'message' => 'JSON inválido'

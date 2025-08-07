@@ -1,0 +1,98 @@
+# Documentación:  API - Seeker Parking
+# Las credenciales que se exponen aquí son para ejemplo de Test
+
+LOGIN API:
+    ° URL:  http://seekerparking.local/api/v1/login_check
+    ° Metodo: POST
+    ° Accion: Autentica un usuario y devuelve un token JWT para usar en las demás peticiones.
+    ° Headers: Content-Type: application/json
+    ° Ejemplo:
+        Request: 
+            {
+                "username": "prueba-tecnica@gmail.com",
+                "password": "Admin123!"
+            }
+        Response:
+            {
+                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9..."
+            }
+
+OBTENER PARKING POR ID:
+    ° URL: api/v1/parking/{id}
+    ° Método: GET
+    ° Accion: Devuelve detalles de un parking específico.
+    ° Parámetros:
+        id (integer) - ID del parking
+    ° Ejemplo:
+        Request:
+            http://seekerparking.local/api/v1/parking/1
+        Response:
+            {
+                "ID": 1,
+                "nombre": "Parking 1",
+                "direccion": "San martin 123",
+                "latitud": 79.254,
+                "longitud": 78.125
+            }
+    ° Reporte de error: 
+        {
+            "message": "El parking no existe"
+        }
+    
+CREAR PARKING:
+    ° URL: api/v1/parking/create
+    ° Método: POST
+    ° Accion: Crea un nuevo parking.
+    ° Headers: Authorization, Content-Type: application/json
+    ° Ejemplo:
+        Request:
+            {
+                "nombre": "Parking A API",
+                "direccion": "Moreno 123",
+                "latitud": 87.123,
+                "longitud": 94.123
+            }
+        Response exitosa:
+            {
+                "message": "Parking creado con exito!"
+            }
+    ° Reporte de error: 
+        {
+            "message": "Faltan campos obligatorios"
+        }
+        ||
+        {
+            "message": "JSON inválido"
+        }
+
+CREAR PARKING:
+    ° URL: api/v1/parking/consultar
+    ° Método: GET
+    ° Accion: Crea un nuevo parking.
+    ° Headers: Authorization, Content-Type: application/json
+    ° Ejemplo:
+        Request:
+            {
+                "latitud": 93.123,
+                "longitud": 92.123
+            }
+        Response exitosa:
+            {
+                "data": {
+                    "id": 2,
+                    "nombre": "Parking A API",
+                    "direccion": "Moreno 123",
+                    "latitud": 87.123,
+                    "longitud": 94.123,
+                    "distancia": 667068.024908776,
+                    "message": "El parking mas cercano se encuentra a una distancia mayor a 500 metros."
+                }
+            }
+    ° Reporte de error: 
+        {
+            "message": "Faltan campos obligatorios"
+        }
+        ||
+        {
+            "message": "JSON inválido"
+        }
