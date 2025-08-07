@@ -14,11 +14,11 @@ class Estadistica
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $latitud = null;
+    #[ORM\Column(type: 'float', nullable: false)]
+    private ?float $latitud = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $longitud = null;
+    #[ORM\Column(type: 'float', nullable: false)]
+    private ?float $longitud = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
@@ -28,24 +28,24 @@ class Estadistica
         return $this->id;
     }
 
-    public function getLatitud(): ?string
+    public function getLatitud(): ?float
     {
         return $this->latitud;
     }
 
-    public function setLatitud(string $latitud): static
+    public function setLatitud(float $latitud): static
     {
         $this->latitud = $latitud;
 
         return $this;
     }
 
-    public function getLongitud(): ?string
+    public function getLongitud(): ?float
     {
         return $this->longitud;
     }
 
-    public function setLongitud(string $longitud): static
+    public function setLongitud(float $longitud): static
     {
         $this->longitud = $longitud;
 

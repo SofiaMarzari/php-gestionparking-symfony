@@ -4,6 +4,8 @@ namespace App\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Parking;
+use App\Entity\Estadistica;
+use \DateTimeInterface;
 
 class ParkingService{
     private $entityManager;
@@ -43,7 +45,7 @@ class ParkingService{
         $this->entityManager->flush();
     }
 
-    private function save_estadistica(string $latitud, string $longitud, DateTimeInterface $date){
+    public function save_estadistica(string $latitud, string $longitud, DateTimeInterface $date){
         $estadistica = new Estadistica();
 
         $estadistica->setLatitud($latitud);

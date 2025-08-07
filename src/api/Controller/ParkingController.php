@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\ParkingService;
-use App\Entity\Estadistica;
 use App\Entity\Parking;
+use \DateTime;
 
 #[IsGranted('ROLE_API')]
 #[Route('/api/v1/parking')]
@@ -102,7 +102,7 @@ class ParkingController extends AbstractController
     public function consultar(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        
+
         if (!$data){
             // throw new BadRequestHttpException('JSON inválido');
             $data = $this->json([
@@ -123,6 +123,8 @@ class ParkingController extends AbstractController
         $longitud = $data['longitud'];
         $latitud = $data['latitud'];
 
+        $dateActual = new DateTime();
+        $this->service->save_estadistica($latitud, $longitud, $dateActual);
 
         $data = $this->service->get_parking_cercano($latitud, $longitud);
 
