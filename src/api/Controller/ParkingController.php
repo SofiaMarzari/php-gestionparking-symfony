@@ -28,13 +28,19 @@ class ParkingController extends AbstractController
     {
         $parking = $this->service->get_parking($id);
 
-        $data = $this->json([
-            'ID' => $parking->getId(),
-            'nombre' => $parking->getNombre(),
-            'direccion' => $parking->getDireccion(),
-            'latitud' => $parking->getLatitud(),
-            'longitud' => $parking->getLongitud()
-        ]);
+        if($parking){
+            $data = $this->json([
+                'ID' => $parking->getId(),
+                'nombre' => $parking->getNombre(),
+                'direccion' => $parking->getDireccion(),
+                'latitud' => $parking->getLatitud(),
+                'longitud' => $parking->getLongitud()
+            ]);
+        }else{
+            $data = $this->json([
+                'message' => "El parking no existe"
+            ]);
+        }
 
         return $data;
     }
@@ -45,16 +51,31 @@ class ParkingController extends AbstractController
         $data = json_decode($request->getContent(), true);
         
         if (!$data){
-            throw new BadRequestHttpException('JSON inválido');
+           // throw new BadRequestHttpException('JSON inválido');
+            $data = $this->json([
+                'message' => 'JSON inválido'
+            ]);
+
+            return $data;
         }
 
         if (empty($data['nombre']) || empty($data['direccion']) || empty($data['longitud']) || empty($data['latitud'])) {
-            throw new BadRequestHttpException('Faltan campos obligatorios.');
+            //throw new BadRequestHttpException('Faltan campos obligatorios.');
+            $data = $this->json([
+                'message' => 'Faltan campos obligatorios'
+            ]);
+
+            return $data;
         }
 
         $isValidCoord = $this->service->validar_coordenadas($data['longitud'], $data['latitud']);
         if(!$isValidCoord){
-            throw new BadRequestHttpException('Coordenadas invalidas.');
+            //throw new BadRequestHttpException('Coordenadas invalidas.');
+            $data = $this->json([
+                'message' => 'Coordenadas invalidas.'
+            ]);
+
+            return $data;
         }
 
         $nom = $data['nombre'];
@@ -71,7 +92,7 @@ class ParkingController extends AbstractController
         $this->service->save_parking($parking);
 
         $data = $this->json([
-            'message' => 'Creado con exito!'
+            'message' => 'Parking creado con exito!'
         ]);
 
         return $data;
@@ -83,10 +104,20 @@ class ParkingController extends AbstractController
         $data = json_decode($request->getContent(), true);
         
         if (!$data){
-            throw new BadRequestHttpException('JSON inválido');
+            // throw new BadRequestHttpException('JSON inválido');
+            $data = $this->json([
+                'message' => 'JSON inválido'
+            ]);
+
+            return $data;
         }
         if (empty($data['latitud']) || empty($data['longitud'])) {
-            throw new BadRequestHttpException('Faltan campos obligatorios');
+            //throw new BadRequestHttpException('Faltan campos obligatorios.');
+            $data = $this->json([
+                'message' => 'Faltan campos obligatorios'
+            ]);
+
+            return $data;
         }
 
         $longitud = $data['longitud'];

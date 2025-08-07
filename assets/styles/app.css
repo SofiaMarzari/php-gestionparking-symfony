@@ -11,6 +11,10 @@ body {
 .btn-volver{
     background-color: #002da1 !important;
 }
+.alert{
+    width: 40%;
+    padding: 8px !important;
+}
 /*****************************HEADER****************************************/
 header{
     background-color: #001245;

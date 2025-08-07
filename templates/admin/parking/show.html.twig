@@ -12,6 +12,11 @@
                 <button type="button" class="btn btn-warning" data-id="{{ parking.id }}"><a href="{{ path('admin_edit_parking', { id: parking.id }) }}">Editar</a></button>
             {% endif %}
         </section>
+        {% for message in app.flashes('message') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
         {% if parkings is defined %}
             <table class="table table-listado" >
                 <thead>

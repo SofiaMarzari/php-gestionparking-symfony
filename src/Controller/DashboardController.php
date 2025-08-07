@@ -11,7 +11,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 #[IsGranted('ROLE_ADMIN')]
 #[Route('admin')]
@@ -96,6 +95,7 @@ class DashboardController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $parking = $service->get_parking($id);
 
+
         $form = $this->createForm(ParkingType::class, $parking, [
             'csrf_protection' => true,
             'csrf_field_name' => '_token',
@@ -112,8 +112,15 @@ class DashboardController extends AbstractController
 
             $isValidCoord = $service->validar_coordenadas($longitud, $latitud);
             if(!$isValidCoord){
-                throw new BadRequestHttpException('Coordenadas invalidas.');
+                $errors = 'Coordenadas invalidas.';
+                return $this->render('admin/parking/new.html.twig', [
+                        'parking' => $parking,
+                        'form' => $form->createView(),
+                        'error' => $errors,
+                        'action' => 'Editar'
+                ]);
             }
+
             $service->save_parking($parking);
 
             $errors = array();
@@ -132,13 +139,18 @@ class DashboardController extends AbstractController
         ]);
     }
 
-    #[Route('/parking/delete/{id}', name: 'admin_delete_parking', methods: ['POST'])]
-    public function delete_parking(): Response
+    #[Route('/parking/delete/{id}', name: 'admin_delete_parking', methods: ['GET', 'DELETE'])]
+    public function delete_parking(int $id, Request $request, ParkingService $service): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'DashboardController',
-            'action' => 'Eliminar'
-        ]);
+        $parking = $service->get_parking($id);
+
+        if($parking){
+            $service->delete_parking($parking);
+            $this->addFlash('message', 'Parking con ID('.$id.') eliminado con éxito.');
+        }
+
+        $errors = array();
+        return $this->redirectToRoute('admin_dashboard');
     }
 }

@@ -37,6 +37,12 @@ class ParkingService{
         return $data;
     }
 
+    public function delete_parking(Parking $parking)  : void
+    {
+        $this->entityManager->remove($parking);
+        $this->entityManager->flush();
+    }
+
     private function save_estadistica(string $latitud, string $longitud, DateTimeInterface $date){
         $estadistica = new Estadistica();
 
