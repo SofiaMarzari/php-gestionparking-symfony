@@ -15,3 +15,6 @@ para esto se debe ejecutar por consola el comando:# php bin/console doctrine:fix
 
 ## Documentacion sobre la API Rest:
 se encuentra en: _documentacion/notas_desarrollo_api.txt
+
+
+## (Esto solo es un challenge básico.)
