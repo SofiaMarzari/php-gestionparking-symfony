@@ -18,11 +18,14 @@ En un entorno real, se utilizarían variables de entorno y mecanismos seguros de
 2- Instalar dependencias:
       composer install
       npm install
+
 3- Configurar base de datos en .env:
       DATABASE_URL="mysql://user:password@127.0.0.1:3306/parking"
+
 4- Ejecutar migraciones y fixtures:
       php bin/console doctrine:migrations:migrate
       php bin/console doctrine:fixtures:load
+
 5- Registro - Login
 Por razones de seguridad los usuarios deben ser registrados por un administrador mediante el 'http://seekerparking.local/register' o para el caso de admin test inicial 
 debe realizarse mediante el bundle fixture que registrara las siguientes 
@@ -30,6 +33,7 @@ debe realizarse mediante el bundle fixture que registrara las siguientes
       - Admin: admin@demo.com / 123456
       - Usuario: user@demo.com / 123456
 para esto se debe ejecutar por consola el comando:# php bin/console doctrine:fixtures:load # ¡Advertencia!: elimina los datos existentes de la tabla implicada para User. No ejecutar en entornos de producción.
+
 
 6- Levantar servidor:
 symfony serve
